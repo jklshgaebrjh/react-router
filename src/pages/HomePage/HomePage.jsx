@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchTrending } from 'services/moviesApi';
+import { Container, Item, List, Title, Image } from './HomePage.styled';
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
@@ -11,20 +12,20 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div>
-      <ul>
+    <Container>
+      <List>
         {movies.map(({ title, poster_path, id }) => {
           return (
-            <li key={id}>
-              <Link>
-                <img src={`https://image.tmdb.org/t/p/w300${poster_path}`} alt="" />
-                <p>{title}</p>
+            <Item key={id}>
+              <Link to={`/movies/${id}`}>
+                <Image src={`https://image.tmdb.org/t/p/w300${poster_path}`} alt="" />
+                <Title>{title}</Title>
               </Link>
-            </li>
+            </Item>
           );
         })}
-      </ul>
-    </div>
+      </List>
+    </Container>
   );
 };
 

@@ -2,7 +2,7 @@ const API_KEY = 'f245aaf7608653bce3f49d160a62870c'
 const BASE_URL = 'https://api.themoviedb.org/3'
 
 function fetchData(endpoint) {
-    return fetch(`${BASE_URL}${endpoint}/&api_key=${API_KEY}`)
+    return fetch(`${BASE_URL}${endpoint}?api_key=${API_KEY}`)
     .then(response => {
         if (!response.ok) throw new Error('something went wrong')
         return response.json()
@@ -10,5 +10,13 @@ function fetchData(endpoint) {
 }
 
 export function fetchTrending() {
-    return fetchData(`/trending/movie/day?`)
+    return fetchData(`/trending/movie/day`);
+}
+
+export function fetchCast(movieId) {
+    return fetchData(`/movie/${movieId}/credits`);
+}
+
+export function fetchReviews(movieId) {
+  return fetchData(`/movie/${movieId}/reviews`);
 }
