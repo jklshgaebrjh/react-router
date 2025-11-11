@@ -1,22 +1,40 @@
-const { Link, Outlet } = require("react-router-dom")
-
+import { Link, Outlet, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { fetchMovieDetails } from 'services/moviesApi';
 
 const MovieDetails = () => {
-    return (
-        <div>
-            <h2>Movie Details</h2>
-            <ul>
-                <li>
-                    <Link to='cast'>Cast</Link>
-                </li>
-                <li>
-                    <Link to='reviews'>reviews</Link>
-                </li>
-            </ul>
+  const { movieId } = useParams();
+  const [movie, setMovie] = useState(null);
 
-            <Outlet/>
-        </div>
-    )
-}
+  useEffect(() => {
+    fetchMovieDetails(movieId).then(setMovie);
+  }, [movieId]);
 
-export default MovieDetails
+  if (!movie) return <p>Loading movie</p>;
+
+  return (
+    <div>
+      {movie.poster_path && (
+        <img
+          src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+          alt={movie.title}
+        />
+      )}
+      <h2>{movie.title}</h2>
+      <p>{movie.overview}</p>
+      <p>rationg: {movie.vote_average}</p>
+      <ul>
+        <li>
+          <Link to="cast">Cast</Link>
+        </li>
+        <li>
+          <Link to="reviews">reviews</Link>
+        </li>
+      </ul>
+
+      <Outlet />
+    </div>
+  );
+};
+
+export default MovieDetails;
